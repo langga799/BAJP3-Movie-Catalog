@@ -3,28 +3,35 @@ package com.langga.moviecatalog.ui.tv
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagedListAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.langga.moviecatalog.R
+import com.langga.moviecatalog.data.source.local.entity.MovieEntity
 import com.langga.moviecatalog.data.source.local.entity.TvShowEntity
 import com.langga.moviecatalog.databinding.ItemListBinding
 import com.langga.moviecatalog.ui.detail.DetailActivity
 
-class TvShowAdapter : RecyclerView.Adapter<TvShowAdapter.TvShowViewHolder>() {
+class TvShowAdapter : PagedListAdapter<TvShowEntity, TvShowAdapter.TvShowViewHolder>(DIFF_CALLBACK) {
 
     companion object {
         const val TV = "TV"
+
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<TvShowEntity>() {
+            override fun areItemsTheSame(oldItem: TvShowEntity, newItem: TvShowEntity): Boolean {
+                return oldItem.id == newItem.id
+            }
+
+            override fun areContentsTheSame(oldItem: TvShowEntity, newItem: TvShowEntity): Boolean {
+                return oldItem == newItem
+            }
+
+        }
     }
 
     private var listTvShow = ArrayList<TvShowEntity>()
-
-    fun setTvShow(tvShow: List<TvShowEntity>?) {
-        if (tvShow == null) return
-        this.listTvShow.clear()
-        this.listTvShow.addAll(tvShow)
-
-    }
 
     inner class TvShowViewHolder(private val binding: ItemListBinding) :
         RecyclerView.ViewHolder(binding.root) {

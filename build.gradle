@@ -44,5 +44,9 @@ ext {
     mockitoVersion = '4.0.2'
     mockitoKotlinVersion = '2.2.0'
 
+    roomVersion = '2.2.3'
+    roomRuntimeVersion = '2.4.1'
+    paging = '2.1.1'
+
     mKLoader = '1.4.0'
 }

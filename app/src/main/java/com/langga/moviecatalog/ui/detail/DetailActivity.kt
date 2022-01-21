@@ -32,7 +32,7 @@ class DetailActivity : AppCompatActivity() {
         actionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = resources.getString(R.string.detail_overview)
 
-        val factory = ViewModelFactory.getInstance()
+        val factory = ViewModelFactory.getInstance(this)
         val detailViewModel = ViewModelProvider(this, factory)[DetailViewModel::class.java]
 
         val idMovie = intent.extras?.getInt(EXTRA_ID_MOVIE) ?: -1
@@ -40,24 +40,24 @@ class DetailActivity : AppCompatActivity() {
 
         binding.loadingDetail.visibility = View.VISIBLE
         binding.pageDetail.visibility = View.GONE
-        when (intent.extras?.getString(TYPE)) {
-            "MOVIES" -> {
-                detailViewModel.getDataDetailMovies(idMovie.toString())
-                    .observe(this, { movieDetail ->
-                        binding.loadingDetail.visibility = View.GONE
-                        binding.pageDetail.visibility = View.VISIBLE
-                        setDataMovies(movieDetail)
-                    })
-            }
-            "TV" -> {
-                detailViewModel.getDetailTvShows(idTvShow.toString())
-                    .observe(this, { tvShowDetail ->
-                        binding.loadingDetail.visibility = View.GONE
-                        binding.pageDetail.visibility = View.VISIBLE
-                        setDataTvShow(tvShowDetail)
-                    })
-            }
-        }
+//        when (intent.extras?.getString(TYPE)) {
+//            "MOVIES" -> {
+//                detailViewModel.getDataDetailMovies(idMovie.toString())
+//                    .observe(this, { movieDetail ->
+//                        binding.loadingDetail.visibility = View.GONE
+//                        binding.pageDetail.visibility = View.VISIBLE
+//                        setDataMovies(movieDetail)
+//                    })
+//            }
+//            "TV" -> {
+//                detailViewModel.getDetailTvShows(idTvShow.toString())
+//                    .observe(this, { tvShowDetail ->
+//                        binding.loadingDetail.visibility = View.GONE
+//                        binding.pageDetail.visibility = View.VISIBLE
+//                        setDataTvShow(tvShowDetail)
+//                    })
+//            }
+//        }
 
 
     }

@@ -1,5 +1,6 @@
 package com.langga.moviecatalog.ui.viewmodel
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.langga.moviecatalog.data.source.MovieTvRepository
@@ -15,9 +16,9 @@ class ViewModelFactory private constructor(private val mMovieTvRepository: Movie
         @Volatile
         private var instance: ViewModelFactory? = null
 
-        fun getInstance(): ViewModelFactory =
+        fun getInstance(context: Context): ViewModelFactory =
             instance ?: synchronized(this) {
-                ViewModelFactory(Injection.provideRepository())
+                instance ?: ViewModelFactory(Injection.provideRepository(context))
             }
 
     }

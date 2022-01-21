@@ -22,4 +22,5 @@
     <string name="logo_app">Logo App</string>
     <string name="image_item_poster">Image Item Poster</string>
     <string name="icon_rating">Icon Rating</string>
+    <string name="favorite">Favorite</string>
 </resources>

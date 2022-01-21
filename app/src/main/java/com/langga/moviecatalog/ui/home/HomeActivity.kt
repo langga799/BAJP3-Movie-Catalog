@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.tabs.TabLayoutMediator
 import com.langga.moviecatalog.R
 import com.langga.moviecatalog.databinding.ActivityHomeBinding
+import com.langga.moviecatalog.ui.favorite.FavoriteActivity
 import com.langga.moviecatalog.ui.movie.MovieFragment
 import com.langga.moviecatalog.ui.settings.SettingActivity
 import com.langga.moviecatalog.ui.tv.TvShowFragment
@@ -61,9 +62,15 @@ class HomeActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.setting_menu) {
-            val intent = Intent(this, SettingActivity::class.java)
-            startActivity(intent)
+        when (item.itemId) {
+            R.id.setting_menu -> {
+                val intent = Intent(this, SettingActivity::class.java)
+                startActivity(intent)
+            }
+            R.id.favorite_film -> {
+                val intent = Intent(this, FavoriteActivity::class.java)
+                startActivity(intent)
+            }
         }
         return super.onOptionsItemSelected(item)
     }

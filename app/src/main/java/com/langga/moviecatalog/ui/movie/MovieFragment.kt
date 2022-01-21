@@ -1,52 +1,71 @@
 package com.langga.moviecatalog.ui.movie
 
-import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.DiffUtil
+import androidx.paging.PagedList
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.langga.moviecatalog.data.source.local.entity.MovieEntity
 import com.langga.moviecatalog.databinding.FragmentMovieBinding
 import com.langga.moviecatalog.ui.viewmodel.ViewModelFactory
+import com.langga.moviecatalog.utils.SortUtils
+import com.langga.moviecatalog.vo.Resource
+import com.langga.moviecatalog.vo.Status
 
 class MovieFragment : Fragment() {
 
-    private lateinit var binding: FragmentMovieBinding
+    private var _binding: FragmentMovieBinding? = null
+    private val binding get() = _binding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
         // Inflate the layout for this fragment
-        binding = FragmentMovieBinding.inflate(layoutInflater, container, false)
-        return binding.root
+        _binding = FragmentMovieBinding.inflate(layoutInflater, container, false)
+        return binding?.root
     }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val movieAdapter = MovieAdapter()
-        binding.rvMovies.adapter = movieAdapter
-        binding.rvMovies.layoutManager = LinearLayoutManager(requireActivity())
-        binding.rvMovies.setHasFixedSize(true)
-
-        val factory = ViewModelFactory.getInstance()
+        val factory = ViewModelFactory.getInstance(requireActivity())
         val viewModel = ViewModelProvider(requireActivity(), factory)[MovieViewModel::class.java]
 
-        binding.loadingInMovie.visibility = View.VISIBLE
-        binding.rvMovies.visibility = View.GONE
-        if (activity != null) {
-            viewModel.getMovies().observe(viewLifecycleOwner, { listMovie ->
-                binding.loadingInMovie.visibility = View.GONE
-                binding.rvMovies.visibility = View.VISIBLE
-                movieAdapter.setMovies(listMovie)
-               // DiffUtil.Callback
-            })
+        val movieAdapter = MovieAdapter()
+        binding?.rvMovies?.adapter = movieAdapter
+        binding?.rvMovies?.layoutManager = LinearLayoutManager(requireActivity())
+        binding?.rvMovies?.setHasFixedSize(true)
+
+        val movieObserver = Observer<Resource<PagedList<MovieEntity>>> { movieData ->
+            if (movieData != null) {
+                when (movieData.status) {
+                    Status.LOADING -> {
+                        binding?.loadingInMovie?.visibility = View.VISIBLE
+                    }
+                    Status.SUCCESS -> {
+                        binding?.loadingInMovie?.visibility = View.GONE
+                        movieAdapter.submitList(movieData.data)
+                    }
+                    Status.ERROR -> {
+                        binding?.loadingInMovie?.visibility = View.GONE
+                        Toast.makeText(requireActivity(), "Unknown error", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                }
+            }
         }
+
+        Log.d("aaa", movieObserver.toString())
+
+        viewModel.getMovies(SortUtils.RATING).observe(viewLifecycleOwner, movieObserver)
 
 
     }
