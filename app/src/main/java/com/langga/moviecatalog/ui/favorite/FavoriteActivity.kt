@@ -56,21 +56,12 @@ class FavoriteActivity : AppCompatActivity() {
 
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.fav_menu, menu)
-        return super.onCreateOptionsMenu(menu)
-    }
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
                 startActivity(Intent(this, HomeActivity::class.java))
                 finishAffinity()
                 return true
-            }
-            R.id.setting_menu -> {
-                val intent = Intent(this, SettingActivity::class.java)
-                startActivity(intent)
             }
         }
         return super.onOptionsItemSelected(item)

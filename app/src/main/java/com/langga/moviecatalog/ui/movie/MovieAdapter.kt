@@ -30,8 +30,6 @@ class MovieAdapter : PagedListAdapter<MovieEntity, MovieAdapter.MovieViewHolder>
         }
     }
 
-    private var listMovie = ArrayList<MovieEntity>()
-
     inner class MovieViewHolder(private val binding: ItemListBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(movie: MovieEntity) {
@@ -48,7 +46,7 @@ class MovieAdapter : PagedListAdapter<MovieEntity, MovieAdapter.MovieViewHolder>
                 }
 
                 Glide.with(itemView.context)
-                    .load(DetailActivity.IMAGE_PATH + movie.posterPath)
+                    .load(DetailActivity.POSTER_PATH + movie.posterPath)
                     .centerCrop()
                     .apply(
                         RequestOptions.placeholderOf(R.drawable.ic_loading)
@@ -70,11 +68,12 @@ class MovieAdapter : PagedListAdapter<MovieEntity, MovieAdapter.MovieViewHolder>
     }
 
     override fun onBindViewHolder(holder: MovieAdapter.MovieViewHolder, position: Int) {
-        val movie = listMovie[position]
-        holder.bind(movie)
+        val movie = getItem(position)
+        if (movie != null) {
+            holder.bind(movie)
+        }
     }
 
-    override fun getItemCount(): Int = listMovie.size
 
 
 }

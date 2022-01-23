@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.langga.moviecatalog.R
-import com.langga.moviecatalog.data.source.local.entity.MovieEntity
 import com.langga.moviecatalog.data.source.local.entity.TvShowEntity
 import com.langga.moviecatalog.databinding.ItemListBinding
 import com.langga.moviecatalog.ui.detail.DetailActivity
@@ -31,8 +30,6 @@ class TvShowAdapter : PagedListAdapter<TvShowEntity, TvShowAdapter.TvShowViewHol
         }
     }
 
-    private var listTvShow = ArrayList<TvShowEntity>()
-
     inner class TvShowViewHolder(private val binding: ItemListBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(tvShow: TvShowEntity) {
@@ -49,7 +46,7 @@ class TvShowAdapter : PagedListAdapter<TvShowEntity, TvShowAdapter.TvShowViewHol
                 }
 
                 Glide.with(itemView.context)
-                    .load(DetailActivity.IMAGE_PATH + tvShow.posterPath)
+                    .load(DetailActivity.POSTER_PATH + tvShow.posterPath)
                     .centerCrop()
                     .apply(
                         RequestOptions.placeholderOf(R.drawable.ic_loading)
@@ -71,9 +68,10 @@ class TvShowAdapter : PagedListAdapter<TvShowEntity, TvShowAdapter.TvShowViewHol
     }
 
     override fun onBindViewHolder(holder: TvShowAdapter.TvShowViewHolder, position: Int) {
-        val tvShow = listTvShow[position]
-        holder.bind(tvShow)
+        val tvShow = getItem(position)
+        if (tvShow != null) {
+            holder.bind(tvShow)
+        }
     }
 
-    override fun getItemCount(): Int = listTvShow.size
 }

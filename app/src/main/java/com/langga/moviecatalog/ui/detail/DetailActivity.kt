@@ -4,12 +4,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import android.widget.ImageView
+import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.langga.moviecatalog.R
 import com.langga.moviecatalog.data.source.local.entity.MovieEntity
 import com.langga.moviecatalog.data.source.local.entity.TvShowEntity
@@ -17,6 +16,8 @@ import com.langga.moviecatalog.databinding.ActivityDetailBinding
 import com.langga.moviecatalog.ui.home.HomeActivity
 import com.langga.moviecatalog.ui.viewmodel.ViewModelFactory
 import com.langga.moviecatalog.utils.LoadImage.loadImage
+import com.langga.moviecatalog.vo.Resource
+import com.langga.moviecatalog.vo.Status
 
 
 class DetailActivity : AppCompatActivity() {
@@ -40,26 +41,94 @@ class DetailActivity : AppCompatActivity() {
 
         binding.loadingDetail.visibility = View.VISIBLE
         binding.pageDetail.visibility = View.GONE
-//        when (intent.extras?.getString(TYPE)) {
-//            "MOVIES" -> {
-//                detailViewModel.getDataDetailMovies(idMovie.toString())
-//                    .observe(this, { movieDetail ->
-//                        binding.loadingDetail.visibility = View.GONE
-//                        binding.pageDetail.visibility = View.VISIBLE
-//                        setDataMovies(movieDetail)
-//                    })
-//            }
-//            "TV" -> {
-//                detailViewModel.getDetailTvShows(idTvShow.toString())
-//                    .observe(this, { tvShowDetail ->
-//                        binding.loadingDetail.visibility = View.GONE
-//                        binding.pageDetail.visibility = View.VISIBLE
-//                        setDataTvShow(tvShowDetail)
-//                    })
-//            }
-//        }
 
+        when (intent.extras?.getString(TYPE)) {
+            "MOVIES" -> {
+                detailViewModel.getDataDetailMovies(idMovie)
+                detailViewModel.dataDetailMovie.observe(this, { dataMovie ->
+                    showDetailMovie(dataMovie)
+                })
+            }
+            "TV" -> {
+                detailViewModel.getDetailTvShows(idTvShow)
+                detailViewModel.dataDetailTvShow.observe(this, { dataTvShow ->
+                    showDetailTvShow(dataTvShow)
+                })
+            }
+        }
 
+        binding.fabFavorite.setOnClickListener {
+            when (intent.extras?.getString(TYPE)) {
+                "MOVIES" -> detailViewModel.setPerFavoriteMovie()
+                "TV" -> detailViewModel.setPerFavoriteTvShow()
+            }
+        }
+    }
+
+    private fun setFavoriteMovie(state: Boolean) {
+        when {
+            state -> {
+                binding.fabFavorite.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        this, R.drawable.ic_favorite_fill
+                    )
+                )
+            }
+            else -> {
+                binding.fabFavorite.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        this, R.drawable.ic_favorite_border
+                    )
+                )
+            }
+        }
+    }
+
+    private fun showDetailMovie(movie: Resource<MovieEntity>) {
+        when (movie.status) {
+            Status.LOADING -> {
+                binding.loadingDetail.visibility = View.VISIBLE
+                binding.pageDetail.visibility = View.INVISIBLE
+            }
+            Status.SUCCESS -> {
+                binding.loadingDetail.visibility = View.GONE
+                binding.pageDetail.visibility = View.VISIBLE
+
+                val state = movie.data?.favoriteMovie
+                if (state != null) {
+                    setFavoriteMovie(state)
+                }
+                movie.data?.let { setDataMovies(it) }
+
+            }
+            Status.ERROR -> {
+                Toast.makeText(this, "Unknown error", Toast.LENGTH_SHORT)
+                    .show()
+            }
+        }
+    }
+
+    private fun showDetailTvShow(tvShow: Resource<TvShowEntity>) {
+        when (tvShow.status) {
+            Status.LOADING -> {
+                binding.loadingDetail.visibility = View.VISIBLE
+                binding.pageDetail.visibility = View.INVISIBLE
+            }
+            Status.SUCCESS -> {
+                binding.loadingDetail.visibility = View.GONE
+                binding.pageDetail.visibility = View.VISIBLE
+
+                val state = tvShow.data?.favoriteTvShow
+                if (state != null) {
+                    setFavoriteMovie(state)
+                }
+                tvShow.data?.let { setDataTvShow(it) }
+            }
+            Status.ERROR -> {
+                Toast.makeText(this, "Unknown error", Toast.LENGTH_SHORT)
+                    .show()
+            }
+        }
     }
 
     private fun setDataMovies(movieEntity: MovieEntity) {
@@ -69,7 +138,8 @@ class DetailActivity : AppCompatActivity() {
             tvDateDetail.text = movieEntity.releaseDate
             tvRatingDetail.text = movieEntity.voteAverage.toString()
             descriptionDetail.text = movieEntity.overview
-            loadImage("$IMAGE_PATH${movieEntity.posterPath}", ivPosterDetail)
+            loadImage("$POSTER_PATH${movieEntity.posterPath}", ivPosterDetail)
+            loadImage("$BACKGROUND_PATH${movieEntity.backDropPath}", ivBackgroundDetail)
         }
     }
 
@@ -80,7 +150,8 @@ class DetailActivity : AppCompatActivity() {
             tvDateDetail.text = tvShowEntity.firstAirDate
             tvRatingDetail.text = tvShowEntity.voteAverage.toString()
             descriptionDetail.text = tvShowEntity.overview
-            loadImage("$IMAGE_PATH${tvShowEntity.posterPath}", ivPosterDetail)
+            loadImage("$POSTER_PATH${tvShowEntity.posterPath}", ivPosterDetail)
+            loadImage("$BACKGROUND_PATH${tvShowEntity.backDropPath}", ivBackgroundDetail)
         }
     }
 
@@ -99,6 +170,7 @@ class DetailActivity : AppCompatActivity() {
         const val EXTRA_ID_MOVIE = "extra_id"
         const val EXTRA_ID_TV = "extra_id_tv"
         const val TYPE = "type"
-        const val IMAGE_PATH = "https://image.tmdb.org/t/p/w500"
+        const val POSTER_PATH = "https://image.tmdb.org/t/p/w500"
+        const val BACKGROUND_PATH = "https://image.tmdb.org/t/p/w500"
     }
 }
