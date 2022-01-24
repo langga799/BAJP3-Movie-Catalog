@@ -64,8 +64,6 @@ object DataLocal {
                 3818
             )
         )
-
-
         return tvShow
     }
 
@@ -74,33 +72,18 @@ object DataLocal {
 
         tvShow.add(
             ResultsItemTvShow(
-                "2021-11-24",
-                "Former Avenger Clint Barton has a seemingly simple mission: get back to his family for Christmas. Possible? Maybe with the help of Kate Bishop, a 22-year-old archer with dreams of becoming a superhero. The two are forced to work together when a presence from Barton’s past threatens to derail far more than the festive spirit.",
+                "2018-05-02",
+                "This Karate Kid sequel series picks up 30 years after the events of the 1984 All Valley Karate Tournament and finds Johnny Lawrence on the hunt for redemption by reopening the infamous Cobra Kai karate dojo. This reignites his old rivalry with the successful Daniel LaRusso, who has been working to maintain the balance in his life without mentor Mr. Miyagi.",
                 "en",
-                "/pqzjCxPVc9TkVgGRWeAoMmyqkZV.jpg",
-                "/1R68vl3d5s86JsS2NPjl8UoMqIS.jpg",
-                "Hawkeye",
-                1758.15,
-                8.5,
-                1252,
-                88329,
+                "/6POBWybSBDBKjSs1VAQcnQC1qyt.jpg",
+                "/35SS0nlBhu28cSe7TiO3ZiywZhl.jpg",
+                "Cobra Kai",
+                4668.244,
+                8.1,
+                77169,
+                3818,
             )
         )
-//
-//        tvShow.add(
-//            ResultsItemTvShow(
-//                "2018-05-02",
-//                "This Karate Kid sequel series picks up 30 years after the events of the 1984 All Valley Karate Tournament and finds Johnny Lawrence on the hunt for redemption by reopening the infamous Cobra Kai karate dojo. This reignites his old rivalry with the successful Daniel LaRusso, who has been working to maintain the balance in his life without mentor Mr. Miyagi.",
-//                "en",
-//                "/6POBWybSBDBKjSs1VAQcnQC1qyt.jpg",
-//                "/35SS0nlBhu28cSe7TiO3ZiywZhl.jpg",
-//                "Cobra Kai",
-//                4668.244,
-//                8.1,
-//                77169,
-//                4156,
-//            )
-//        )
         return tvShow
     }
 

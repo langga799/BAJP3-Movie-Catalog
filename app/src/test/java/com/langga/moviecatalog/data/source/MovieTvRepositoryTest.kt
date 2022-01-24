@@ -57,7 +57,7 @@ class MovieTvRepositoryTest {
 
         val tvShowEntity =
             Resource.success(PagedListUtils.mockPagedList(DataLocal.generateLocalTvShow()))
-        verify(local).getAllMovies(sort)
+        verify(local).getAllTvShow(sort)
         assertNotNull(tvShowEntity.data)
         assertEquals(tvShowResponse.size.toLong(), tvShowEntity.data?.size?.toLong())
     }
