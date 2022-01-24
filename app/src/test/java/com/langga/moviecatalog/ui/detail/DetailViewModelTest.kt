@@ -7,7 +7,7 @@ import com.langga.moviecatalog.data.source.MovieTvRepository
 import com.langga.moviecatalog.data.source.local.entity.MovieEntity
 import com.langga.moviecatalog.data.source.local.entity.TvShowEntity
 import com.langga.moviecatalog.utils.DataLocal
-import org.junit.Assert.assertEquals
+import com.langga.moviecatalog.vo.Resource
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -22,9 +22,9 @@ class DetailViewModelTest {
 
     private lateinit var detailViewModel: DetailViewModel
     private val dataLocalMovie = DataLocal.generateLocalMovies()[0]
-    private val movieId = dataLocalMovie.id.toString()
+    private val movieId = dataLocalMovie.id
     private val dataLocalTvShow = DataLocal.generateLocalTvShow()[0]
-    private val tvShowId = dataLocalTvShow.id.toString()
+    private val tvShowId = dataLocalTvShow.id
 
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
@@ -33,64 +33,38 @@ class DetailViewModelTest {
     private lateinit var movieTvRepository: MovieTvRepository
 
     @Mock
-    private lateinit var movieObserver: Observer<MovieEntity>
+    private lateinit var movieObserver: Observer<Resource<MovieEntity>>
 
     @Mock
-    private lateinit var tvShowObserver: Observer<TvShowEntity>
+    private lateinit var tvShowObserver: Observer<Resource<TvShowEntity>>
 
     @Before
     fun setUp() {
         detailViewModel = DetailViewModel(movieTvRepository)
+        detailViewModel.getDataDetailMovies(movieId)
+        detailViewModel.getDetailTvShows(tvShowId)
     }
 
     @Test
     fun getDataDetailMovies() {
-        val movie = MutableLiveData<MovieEntity>()
-        movie.value = dataLocalMovie
+        val resourceMovie = Resource.success(dataLocalMovie)
+        val movie = MutableLiveData<Resource<MovieEntity>>()
+        movie.value = resourceMovie
 
         `when`(movieTvRepository.getMovieById(movieId)).thenReturn(movie)
-        val movieEntity = detailViewModel.getDataDetailMovies(movieId).value as MovieEntity
-        verify(movieTvRepository).getMovieById(movieId)
-
-        assertEquals(dataLocalMovie.id, movieEntity.id)
-        assertEquals(dataLocalMovie.originalTitle, movieEntity.originalTitle)
-        assertEquals(dataLocalMovie.popularity.toString(), movieEntity.popularity.toString())
-        assertEquals(dataLocalMovie.releaseDate, movieEntity.releaseDate)
-        assertEquals(dataLocalMovie.voteAverage.toString(), movieEntity.voteAverage.toString())
-        assertEquals(dataLocalMovie.overview, movieEntity.overview)
-        assertEquals(dataLocalMovie.posterPath, movieEntity.posterPath)
-        assertEquals(dataLocalMovie.backDropPath, movieEntity.backDropPath)
-        assertEquals(dataLocalMovie.originalLanguage, movieEntity.originalLanguage)
-        assertEquals(dataLocalMovie.voteCount, movieEntity.voteCount)
-
-        detailViewModel.getDataDetailMovies(movieId).observeForever(movieObserver)
-        verify(movieObserver).onChanged(dataLocalMovie)
-
+        detailViewModel.dataDetailMovie.observeForever(movieObserver)
+        verify(movieObserver).onChanged(resourceMovie)
     }
 
     @Test
-    fun getDetailTvShows() {
-        val tvShow = MutableLiveData<TvShowEntity>()
-        tvShow.value = dataLocalTvShow
+    fun getDataDetailTvShows() {
+        val resourceTvShow = Resource.success(dataLocalTvShow)
+        val tvShow = MutableLiveData<Resource<TvShowEntity>>()
+        tvShow.value = resourceTvShow
 
         `when`(movieTvRepository.getTvShowById(tvShowId)).thenReturn(tvShow)
-        val tvShowEntity = detailViewModel.getDetailTvShows(tvShowId).value as TvShowEntity
-        verify(movieTvRepository).getTvShowById(tvShowId)
-
-        assertEquals(dataLocalTvShow.id, tvShowEntity.id)
-        assertEquals(dataLocalTvShow.originalName, tvShowEntity.originalName)
-        assertEquals(dataLocalTvShow.popularity.toString(), tvShowEntity.popularity.toString())
-        assertEquals(dataLocalTvShow.firstAirDate, tvShowEntity.firstAirDate)
-        assertEquals(dataLocalTvShow.voteAverage.toString(), tvShowEntity.voteAverage.toString())
-        assertEquals(dataLocalTvShow.overview, tvShowEntity.overview)
-        assertEquals(dataLocalTvShow.posterPath, tvShowEntity.posterPath)
-        assertEquals(dataLocalTvShow.backDropPath, tvShowEntity.backDropPath)
-        assertEquals(dataLocalTvShow.originalLanguage, tvShowEntity.originalLanguage)
-        assertEquals(dataLocalTvShow.voteCount, tvShowEntity.voteCount)
-
-        detailViewModel.getDetailTvShows(tvShowId).observeForever(tvShowObserver)
-        verify(tvShowObserver).onChanged(dataLocalTvShow)
+        detailViewModel.dataDetailTvShow.observeForever(tvShowObserver)
+        verify(tvShowObserver).onChanged(resourceTvShow)
     }
-
 
 }

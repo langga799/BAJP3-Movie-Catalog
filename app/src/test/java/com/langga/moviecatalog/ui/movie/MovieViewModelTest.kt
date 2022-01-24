@@ -3,9 +3,11 @@ package com.langga.moviecatalog.ui.movie
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import androidx.paging.PagedList
 import com.langga.moviecatalog.data.source.MovieTvRepository
 import com.langga.moviecatalog.data.source.local.entity.MovieEntity
-import com.langga.moviecatalog.utils.DataLocal
+import com.langga.moviecatalog.utils.SortUtils
+import com.langga.moviecatalog.vo.Resource
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Before
@@ -21,6 +23,7 @@ import org.mockito.junit.MockitoJUnitRunner
 class MovieViewModelTest {
 
     private lateinit var movieViewModel: MovieViewModel
+    private val sort = SortUtils.RATING
 
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
@@ -29,7 +32,10 @@ class MovieViewModelTest {
     private lateinit var movieTvRepository: MovieTvRepository
 
     @Mock
-    private lateinit var observer: Observer<List<MovieEntity>>
+    private lateinit var observer: Observer<Resource<PagedList<MovieEntity>>>
+
+    @Mock
+    private lateinit var pagedMovie: PagedList<MovieEntity>
 
     @Before
     fun setUp() {
@@ -38,16 +44,18 @@ class MovieViewModelTest {
 
     @Test
     fun getMovies() {
-        val dataLocalMovie = DataLocal.generateLocalMovies()
-        val movie = MutableLiveData<List<MovieEntity>>()
+        val dataLocalMovie = Resource.success(pagedMovie)
+        `when`(dataLocalMovie.data?.size).thenReturn(0)
+        val movie = MutableLiveData<Resource<PagedList<MovieEntity>>>()
         movie.value = dataLocalMovie
 
-        `when`(movieTvRepository.getAllMovies()).thenReturn(movie)
-        val dataMovies = movieViewModel.getMovies().value
-        assertNotNull(dataMovies)
-        assertEquals(1, dataMovies?.size)
+        `when`(movieTvRepository.getAllMovies(sort)).thenReturn(movie)
+        val movieEntity = movieViewModel.getMovies(sort).value?.data
+        verify(movieTvRepository).getAllMovies(sort)
+        assertNotNull(movieEntity)
+        assertEquals(0, movieEntity?.size)
 
-        movieViewModel.getMovies().observeForever(observer)
+        movieViewModel.getMovies(sort).observeForever(observer)
         verify(observer).onChanged(dataLocalMovie)
     }
 }

@@ -36,21 +36,25 @@ class DetailActivity : AppCompatActivity() {
         val factory = ViewModelFactory.getInstance(this)
         val detailViewModel = ViewModelProvider(this, factory)[DetailViewModel::class.java]
 
-        val idMovie = intent.extras?.getInt(EXTRA_ID_MOVIE) ?: -1
-        val idTvShow = intent.extras?.getInt(EXTRA_ID_TV) ?: -1
+        val idMovie = intent.extras?.getInt(EXTRA_ID_MOVIE)
+        val idTvShow = intent.extras?.getInt(EXTRA_ID_TV)
 
         binding.loadingDetail.visibility = View.VISIBLE
         binding.pageDetail.visibility = View.GONE
 
         when (intent.extras?.getString(TYPE)) {
-            "MOVIES" -> {
-                detailViewModel.getDataDetailMovies(idMovie)
+            MOVIES -> {
+                if (idMovie != null) {
+                    detailViewModel.getDataDetailMovies(idMovie)
+                }
                 detailViewModel.dataDetailMovie.observe(this, { dataMovie ->
                     showDetailMovie(dataMovie)
                 })
             }
-            "TV" -> {
-                detailViewModel.getDetailTvShows(idTvShow)
+            TV -> {
+                if (idTvShow != null) {
+                    detailViewModel.getDetailTvShows(idTvShow)
+                }
                 detailViewModel.dataDetailTvShow.observe(this, { dataTvShow ->
                     showDetailTvShow(dataTvShow)
                 })
@@ -59,8 +63,8 @@ class DetailActivity : AppCompatActivity() {
 
         binding.fabFavorite.setOnClickListener {
             when (intent.extras?.getString(TYPE)) {
-                "MOVIES" -> detailViewModel.setPerFavoriteMovie()
-                "TV" -> detailViewModel.setPerFavoriteTvShow()
+                MOVIES -> detailViewModel.setPerFavoriteMovie()
+                TV -> detailViewModel.setPerFavoriteTvShow()
             }
         }
     }
@@ -97,8 +101,9 @@ class DetailActivity : AppCompatActivity() {
                 val state = movie.data?.favoriteMovie
                 if (state != null) {
                     setFavoriteMovie(state)
+                    setDataMovies(movie.data)
                 }
-                movie.data?.let { setDataMovies(it) }
+
 
             }
             Status.ERROR -> {
@@ -121,8 +126,9 @@ class DetailActivity : AppCompatActivity() {
                 val state = tvShow.data?.favoriteTvShow
                 if (state != null) {
                     setFavoriteMovie(state)
+                    setDataTvShow(tvShow.data)
                 }
-                tvShow.data?.let { setDataTvShow(it) }
+
             }
             Status.ERROR -> {
                 Toast.makeText(this, "Unknown error", Toast.LENGTH_SHORT)
@@ -159,7 +165,7 @@ class DetailActivity : AppCompatActivity() {
         when (item.itemId) {
             android.R.id.home -> {
                 startActivity(Intent(this, HomeActivity::class.java))
-                finishAffinity()
+                finish()
                 return true
             }
         }
@@ -167,6 +173,8 @@ class DetailActivity : AppCompatActivity() {
     }
 
     companion object {
+        const val MOVIES = "MOVIES"
+        const val TV = "TV"
         const val EXTRA_ID_MOVIE = "extra_id"
         const val EXTRA_ID_TV = "extra_id_tv"
         const val TYPE = "type"

@@ -47,8 +47,10 @@ class FavoriteMovieFragment : Fragment() {
         binding?.rvMovies?.adapter = adapter
         adapter.submitList(movieEntity)
 
-        if (adapter.itemCount == 0){
-            Toast.makeText(requireActivity(), "Data is empty!", Toast.LENGTH_SHORT).show()
+        if (adapter.itemCount == 0) {
+            binding?.tvMessageMovie?.visibility = View.VISIBLE
+        } else {
+            binding?.tvMessageMovie?.visibility = View.INVISIBLE
         }
     }
 

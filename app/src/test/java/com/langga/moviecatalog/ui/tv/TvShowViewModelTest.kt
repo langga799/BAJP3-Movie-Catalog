@@ -3,9 +3,13 @@ package com.langga.moviecatalog.ui.tv
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import androidx.paging.PagedList
 import com.langga.moviecatalog.data.source.MovieTvRepository
+import com.langga.moviecatalog.data.source.local.entity.MovieEntity
 import com.langga.moviecatalog.data.source.local.entity.TvShowEntity
 import com.langga.moviecatalog.utils.DataLocal
+import com.langga.moviecatalog.utils.SortUtils
+import com.langga.moviecatalog.vo.Resource
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Before
@@ -21,6 +25,7 @@ import org.mockito.junit.MockitoJUnitRunner
 class TvShowViewModelTest {
 
     private lateinit var tvShowViewModel: TvShowViewModel
+    private val sort = SortUtils.RATING
 
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
@@ -29,7 +34,10 @@ class TvShowViewModelTest {
     private lateinit var movieTvRepository: MovieTvRepository
 
     @Mock
-    private lateinit var observer: Observer<List<TvShowEntity>>
+    private lateinit var observer: Observer<Resource<PagedList<TvShowEntity>>>
+
+    @Mock
+    private lateinit var pagedTvShow: PagedList<TvShowEntity>
 
     @Before
     fun setUp() {
@@ -38,16 +46,18 @@ class TvShowViewModelTest {
 
     @Test
     fun getTvShow() {
-        val dataLocalTvShow = DataLocal.generateLocalTvShow()
-        val tvShow = MutableLiveData<List<TvShowEntity>>()
+        val dataLocalTvShow = Resource.success(pagedTvShow)
+        `when`(dataLocalTvShow.data?.size).thenReturn(0)
+        val tvShow = MutableLiveData<Resource<PagedList<TvShowEntity>>>()
         tvShow.value = dataLocalTvShow
 
-        `when`(movieTvRepository.getAllTvShows()).thenReturn(tvShow)
-        val dataTvShow = tvShowViewModel.getTvShow().value
-        assertNotNull(dataTvShow)
-        assertEquals(1, dataTvShow?.size)
+        `when`(movieTvRepository.getAllTvShows(sort)).thenReturn(tvShow)
+        val tvShowEntity = tvShowViewModel.getTvShow(sort).value?.data
+        verify(movieTvRepository).getAllTvShows(sort)
+        assertNotNull(tvShowEntity)
+        assertEquals(0, tvShowEntity?.size)
 
-        tvShowViewModel.getTvShow().observeForever(observer)
+        tvShowViewModel.getTvShow(sort).observeForever(observer)
         verify(observer).onChanged(dataLocalTvShow)
     }
 }

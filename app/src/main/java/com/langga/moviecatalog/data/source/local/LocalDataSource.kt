@@ -12,8 +12,12 @@ class LocalDataSource private constructor(private val mMovieTvDao: MovieTvDao) {
     companion object {
         private var INSTANCE: LocalDataSource? = null
 
-        fun getInstance(movieTvDao: MovieTvDao): LocalDataSource =
-            INSTANCE ?: LocalDataSource(movieTvDao)
+        fun getInstance(movieTvDao: MovieTvDao): LocalDataSource {
+            if (INSTANCE == null) {
+                INSTANCE = LocalDataSource(movieTvDao)
+            }
+            return INSTANCE as LocalDataSource
+        }
     }
 
     fun getAllMovies(sort: String): DataSource.Factory<Int, MovieEntity> {

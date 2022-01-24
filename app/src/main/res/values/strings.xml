@@ -25,4 +25,13 @@
     <string name="favorite">Favorite</string>
     <string name="fab_favorites">Fab Favorites</string>
     <string name="poster_image">Poster Image</string>
+    <string name="filter">Filter</string>
+    <string name="check_spinner">Check Spinner</string>
+
+    <string-array name="filter_item">
+        <item>Rating</item>
+        <item>Newest</item>
+        <item>Oldest</item>
+    </string-array>
+
 </resources>

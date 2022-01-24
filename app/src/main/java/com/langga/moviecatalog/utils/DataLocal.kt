@@ -86,6 +86,21 @@ object DataLocal {
                 88329,
             )
         )
+//
+//        tvShow.add(
+//            ResultsItemTvShow(
+//                "2018-05-02",
+//                "This Karate Kid sequel series picks up 30 years after the events of the 1984 All Valley Karate Tournament and finds Johnny Lawrence on the hunt for redemption by reopening the infamous Cobra Kai karate dojo. This reignites his old rivalry with the successful Daniel LaRusso, who has been working to maintain the balance in his life without mentor Mr. Miyagi.",
+//                "en",
+//                "/6POBWybSBDBKjSs1VAQcnQC1qyt.jpg",
+//                "/35SS0nlBhu28cSe7TiO3ZiywZhl.jpg",
+//                "Cobra Kai",
+//                4668.244,
+//                8.1,
+//                77169,
+//                4156,
+//            )
+//        )
         return tvShow
     }
 
