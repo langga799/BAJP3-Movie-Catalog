@@ -42,6 +42,8 @@ class TvShowFragment : Fragment() {
         binding.rvTvShows.layoutManager = LinearLayoutManager(requireActivity())
         binding.rvTvShows.setHasFixedSize(true)
 
+        binding.loadingInTv.visibility = View.VISIBLE
+
         val factory = ViewModelFactory.getInstance(requireActivity())
         val viewModel = ViewModelProvider(requireActivity(), factory)[TvShowViewModel::class.java]
 
@@ -77,7 +79,7 @@ class TvShowFragment : Fragment() {
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>,
-                view: View,
+                view: View?,
                 position: Int,
                 id: Long,
             ) {
@@ -102,6 +104,5 @@ class TvShowFragment : Fragment() {
 
 
     }
-
 
 }

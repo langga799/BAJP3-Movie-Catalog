@@ -64,6 +64,9 @@ class MovieFragment : Fragment() {
             }
         }
 
+        viewModel.getMovies(SortUtils.RATING)
+            .observe(requireActivity(), movieObserver)
+
         val spinner = binding?.spinnerFilterMovie
         ArrayAdapter.createFromResource(
             requireActivity(),
@@ -77,30 +80,28 @@ class MovieFragment : Fragment() {
         spinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>,
-                view: View,
+                view: View?,
                 position: Int,
                 id: Long,
             ) {
                 when (position) {
                     0 -> {
                         viewModel.getMovies(SortUtils.RATING)
-                            .observe(viewLifecycleOwner, movieObserver)
+                            .observe(requireActivity(), movieObserver)
                     }
                     1 -> {
                         viewModel.getMovies(SortUtils.NEWEST)
-                            .observe(viewLifecycleOwner, movieObserver)
+                            .observe(requireActivity(), movieObserver)
                     }
                     2 -> {
                         viewModel.getMovies(SortUtils.OLDEST)
-                            .observe(viewLifecycleOwner, movieObserver)
+                            .observe(requireActivity(), movieObserver)
                     }
                 }
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {}
         }
-
-
     }
 
 }
