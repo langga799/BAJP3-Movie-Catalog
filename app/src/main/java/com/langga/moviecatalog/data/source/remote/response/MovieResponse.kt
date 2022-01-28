@@ -4,8 +4,8 @@ import com.google.gson.annotations.SerializedName
 
 data class MovieResponse(
 
-	@field:SerializedName("results")
-	val results: List<ResultsItemMovie>,
+    @field:SerializedName("results")
+    val results: List<ResultsItemMovie>,
 )
 
 data class ResultsItemMovie(
@@ -38,5 +38,5 @@ data class ResultsItemMovie(
 	val id: Int,
 
 	@field:SerializedName("vote_count")
-	val voteCount: Int
+	val voteCount: Int,
 )

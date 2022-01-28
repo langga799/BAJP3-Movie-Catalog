@@ -13,7 +13,8 @@ import com.langga.moviecatalog.data.source.local.entity.TvShowEntity
 import com.langga.moviecatalog.databinding.ItemListBinding
 import com.langga.moviecatalog.ui.detail.DetailActivity
 
-class TvShowAdapter : PagedListAdapter<TvShowEntity, TvShowAdapter.TvShowViewHolder>(DIFF_CALLBACK) {
+class TvShowAdapter :
+    PagedListAdapter<TvShowEntity, TvShowAdapter.TvShowViewHolder>(DIFF_CALLBACK) {
 
     companion object {
         const val TV = "TV"

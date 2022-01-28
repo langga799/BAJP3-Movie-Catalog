@@ -40,5 +40,5 @@ data class TvShowEntity(
     val voteCount: Int,
 
     @ColumnInfo(name = "favoriteTvShow")
-    var favoriteTvShow: Boolean = false
+    var favoriteTvShow: Boolean = false,
 )

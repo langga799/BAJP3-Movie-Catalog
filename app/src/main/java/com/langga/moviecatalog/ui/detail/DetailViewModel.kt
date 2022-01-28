@@ -44,7 +44,7 @@ class DetailViewModel(private val movieTvRepository: MovieTvRepository) : ViewMo
 
     fun setPerFavoriteTvShow() {
         val tvShowResource = dataDetailTvShow.value?.data
-        if (tvShowResource != null){
+        if (tvShowResource != null) {
             val state = tvShowResource.favoriteTvShow.not()
             movieTvRepository.setPerFavoriteTvShow(tvShowResource, state)
         }

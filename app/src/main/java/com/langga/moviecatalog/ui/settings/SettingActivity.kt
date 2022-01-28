@@ -26,10 +26,8 @@ class SettingActivity : AppCompatActivity() {
         supportActionBar?.title = "Setting App"
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-
         changeTheme()
         shareApplication()
-
 
     }
 

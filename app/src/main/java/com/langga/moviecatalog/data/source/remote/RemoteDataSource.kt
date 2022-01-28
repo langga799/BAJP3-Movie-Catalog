@@ -39,7 +39,7 @@ class RemoteDataSource {
                 ) {
                     if (response.isSuccessful) {
                         val dataMovie = response.body()?.results!!
-                        Log.d(TAG , dataMovie.toString())
+                        Log.d(TAG, dataMovie.toString())
                         resultMovie.postValue(ApiResponse.success(dataMovie))
                     }
                     EspressoIdlingResource.decrement()

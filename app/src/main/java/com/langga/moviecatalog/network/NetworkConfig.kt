@@ -10,7 +10,7 @@ class NetworkConfig {
 
     companion object {
         fun getApiService(): ApiService {
-            val httpLoggingInterceptor = if (BuildConfig.DEBUG){
+            val httpLoggingInterceptor = if (BuildConfig.DEBUG) {
                 HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
             } else {
                 HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.NONE)

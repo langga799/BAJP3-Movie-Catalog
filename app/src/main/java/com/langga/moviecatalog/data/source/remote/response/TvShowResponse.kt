@@ -4,8 +4,8 @@ import com.google.gson.annotations.SerializedName
 
 data class TvShowResponse(
 
-	@field:SerializedName("results")
-	val results: List<ResultsItemTvShow>,
+    @field:SerializedName("results")
+    val results: List<ResultsItemTvShow>,
 )
 
 data class ResultsItemTvShow(
@@ -38,5 +38,5 @@ data class ResultsItemTvShow(
 	val id: Int,
 
 	@field:SerializedName("vote_count")
-	val voteCount: Int
+	val voteCount: Int,
 )

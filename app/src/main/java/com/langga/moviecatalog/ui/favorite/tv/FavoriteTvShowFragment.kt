@@ -1,24 +1,22 @@
 package com.langga.moviecatalog.ui.favorite.tv
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.langga.moviecatalog.data.source.local.entity.TvShowEntity
-import com.langga.moviecatalog.databinding.FragmentTvShowBinding
+import com.langga.moviecatalog.databinding.FragmentFavoriteTvShowBinding
 import com.langga.moviecatalog.ui.favorite.FavoriteViewModel
 import com.langga.moviecatalog.ui.viewmodel.ViewModelFactory
 
 
 class FavoriteTvShowFragment : Fragment() {
 
-    private var _binding: FragmentTvShowBinding? = null
+    private var _binding: FragmentFavoriteTvShowBinding? = null
     private val binding get() = _binding
 
     override fun onCreateView(
@@ -26,7 +24,7 @@ class FavoriteTvShowFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View? {
         // Inflate the layout for this fragment
-        _binding = FragmentTvShowBinding.inflate(layoutInflater, container, false)
+        _binding = FragmentFavoriteTvShowBinding.inflate(layoutInflater, container, false)
         return binding?.root
     }
 
@@ -36,17 +34,17 @@ class FavoriteTvShowFragment : Fragment() {
         val factory = ViewModelFactory.getInstance(requireActivity())
         val favoriteViewModel = ViewModelProvider(this, factory)[FavoriteViewModel::class.java]
 
-        binding?.loadingInTv?.visibility = View.VISIBLE
+        binding?.loadingInTvShow?.visibility = View.VISIBLE
         favoriteViewModel.getFavoriteTvShow().observe(viewLifecycleOwner, { dataFavoriteTvShow ->
-            binding?.loadingInTv?.visibility = View.INVISIBLE
+            binding?.loadingInTvShow?.visibility = View.INVISIBLE
             setupRecyclerView(dataFavoriteTvShow)
         })
     }
 
     private fun setupRecyclerView(tvShowEntity: PagedList<TvShowEntity>) {
         val adapter = FavoriteTvShowAdapter()
-        binding?.rvTvShows?.layoutManager = LinearLayoutManager(requireActivity())
-        binding?.rvTvShows?.adapter = adapter
+        binding?.rvTvShowFavorite?.layoutManager = LinearLayoutManager(requireActivity())
+        binding?.rvTvShowFavorite?.adapter = adapter
         adapter.submitList(tvShowEntity)
 
         if (adapter.itemCount == 0) {

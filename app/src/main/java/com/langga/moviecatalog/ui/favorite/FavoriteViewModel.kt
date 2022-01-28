@@ -7,13 +7,13 @@ import com.langga.moviecatalog.data.source.MovieTvRepository
 import com.langga.moviecatalog.data.source.local.entity.MovieEntity
 import com.langga.moviecatalog.data.source.local.entity.TvShowEntity
 
-class FavoriteViewModel(private val movieTvRepository: MovieTvRepository): ViewModel() {
+class FavoriteViewModel(private val movieTvRepository: MovieTvRepository) : ViewModel() {
 
     fun getFavoriteMovie(): LiveData<PagedList<MovieEntity>> {
         return movieTvRepository.getFavoriteMovie()
     }
 
-    fun getFavoriteTvShow(): LiveData<PagedList<TvShowEntity>>{
+    fun getFavoriteTvShow(): LiveData<PagedList<TvShowEntity>> {
         return movieTvRepository.getFavoriteTvShow()
     }
 

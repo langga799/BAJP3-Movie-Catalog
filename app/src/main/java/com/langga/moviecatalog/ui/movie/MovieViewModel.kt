@@ -9,7 +9,7 @@ import com.langga.moviecatalog.vo.Resource
 
 class MovieViewModel(private val movieTvRepository: MovieTvRepository) : ViewModel() {
 
-    fun getMovies(sort:String): LiveData<Resource<PagedList<MovieEntity>>> {
+    fun getMovies(sort: String): LiveData<Resource<PagedList<MovieEntity>>> {
         return movieTvRepository.getAllMovies(sort)
     }
 

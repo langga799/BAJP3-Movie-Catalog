@@ -75,5 +75,4 @@ class MovieAdapter : PagedListAdapter<MovieEntity, MovieAdapter.MovieViewHolder>
     }
 
 
-
 }

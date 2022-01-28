@@ -119,7 +119,7 @@ class HomeActivityTest {
         onView(withId(R.id.fab_favorite)).perform(click())
         onView(isRoot()).perform(pressBack())
         onView(withId(R.id.favorite_film)).perform(click())
-        onView(withId(R.id.rv_movies)).perform(
+        onView(withId(R.id.rv_movies_favorite)).perform(
             RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
         onView(withId(R.id.page_detail)).perform(swipeUp())
         onView(withId(R.id.iv_background_detail)).check(matches(isDisplayed()))
@@ -129,6 +129,7 @@ class HomeActivityTest {
         onView(withId(R.id.tv_date_detail)).check(matches(isDisplayed()))
         onView(withId(R.id.tv_rating_detail)).check(matches(isDisplayed()))
         onView(withId(R.id.description_detail)).check(matches(isDisplayed()))
+        onView(withId(R.id.fab_favorite)).perform(click())
     }
 
     @Test
@@ -140,7 +141,7 @@ class HomeActivityTest {
         onView(isRoot()).perform(pressBack())
         onView(withId(R.id.favorite_film)).perform(click())
         onView(withText("TV SHOW")).perform(click())
-        onView(withId(R.id.rv_tv_shows)).perform(
+        onView(withId(R.id.rv_tv_show_favorite)).perform(
             RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
         onView(withId(R.id.page_detail)).perform(swipeUp())
         onView(withId(R.id.iv_poster_detail)).check(matches(isDisplayed()))
@@ -149,6 +150,7 @@ class HomeActivityTest {
         onView(withId(R.id.tv_date_detail)).check(matches(isDisplayed()))
         onView(withId(R.id.tv_rating_detail)).check(matches(isDisplayed()))
         onView(withId(R.id.description_detail)).check(matches(isDisplayed()))
+        onView(withId(R.id.fab_favorite)).perform(click())
     }
 
     @Test

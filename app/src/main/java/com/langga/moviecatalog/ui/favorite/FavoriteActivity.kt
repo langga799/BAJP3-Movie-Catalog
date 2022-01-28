@@ -2,7 +2,6 @@ package com.langga.moviecatalog.ui.favorite
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.tabs.TabLayoutMediator
@@ -11,7 +10,6 @@ import com.langga.moviecatalog.databinding.ActivityFavoriteBinding
 import com.langga.moviecatalog.ui.favorite.movie.FavoriteMovieFragment
 import com.langga.moviecatalog.ui.favorite.tv.FavoriteTvShowFragment
 import com.langga.moviecatalog.ui.home.HomeActivity
-import com.langga.moviecatalog.ui.settings.SettingActivity
 
 class FavoriteActivity : AppCompatActivity() {
 

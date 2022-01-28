@@ -37,13 +37,15 @@ class TvShowFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val factory = ViewModelFactory.getInstance(requireActivity())
+        val viewModel = ViewModelProvider(requireActivity(), factory)[TvShowViewModel::class.java]
+
         val tvShowAdapter = TvShowAdapter()
         binding.rvTvShows.adapter = tvShowAdapter
         binding.rvTvShows.layoutManager = LinearLayoutManager(requireActivity())
         binding.rvTvShows.setHasFixedSize(true)
 
-        val factory = ViewModelFactory.getInstance(requireActivity())
-        val viewModel = ViewModelProvider(requireActivity(), factory)[TvShowViewModel::class.java]
+        binding.loadingInTv.visibility = View.VISIBLE
 
         val tvShowObserver = Observer<Resource<PagedList<TvShowEntity>>> { tvShowData ->
             if (tvShowData != null) {
@@ -64,6 +66,9 @@ class TvShowFragment : Fragment() {
             }
         }
 
+        viewModel.getTvShow(SortUtils.RATING)
+            .observe(requireActivity(), tvShowObserver)
+
         val spinner = binding.spinnerFilterTvShow
         ArrayAdapter.createFromResource(
             requireActivity(),
@@ -77,7 +82,7 @@ class TvShowFragment : Fragment() {
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>,
-                view: View,
+                view: View?,
                 position: Int,
                 id: Long,
             ) {

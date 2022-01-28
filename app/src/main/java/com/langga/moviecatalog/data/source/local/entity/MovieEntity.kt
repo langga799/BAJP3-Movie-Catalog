@@ -40,5 +40,5 @@ data class MovieEntity(
     val voteCount: Int,
 
     @ColumnInfo(name = "favoriteMovie")
-    var favoriteMovie: Boolean = false
+    var favoriteMovie: Boolean = false,
 )

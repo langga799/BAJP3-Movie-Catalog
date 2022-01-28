@@ -4,21 +4,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.langga.moviecatalog.data.source.local.entity.MovieEntity
-import com.langga.moviecatalog.databinding.FragmentMovieBinding
-import com.langga.moviecatalog.ui.detail.DetailViewModel
+import com.langga.moviecatalog.databinding.FragmentFavoriteMovieBinding
 import com.langga.moviecatalog.ui.favorite.FavoriteViewModel
 import com.langga.moviecatalog.ui.viewmodel.ViewModelFactory
 
 
 class FavoriteMovieFragment : Fragment() {
 
-    private var _binding: FragmentMovieBinding? = null
+    private var _binding: FragmentFavoriteMovieBinding? = null
     private val binding get() = _binding
 
     override fun onCreateView(
@@ -26,7 +24,7 @@ class FavoriteMovieFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View? {
         // Inflate the layout for this fragment
-        _binding = FragmentMovieBinding.inflate(layoutInflater, container, false)
+        _binding = FragmentFavoriteMovieBinding.inflate(layoutInflater, container, false)
         return binding?.root
     }
 
@@ -43,8 +41,8 @@ class FavoriteMovieFragment : Fragment() {
 
     private fun setupRecyclerView(movieEntity: PagedList<MovieEntity>) {
         val adapter = FavoriteMovieAdapter()
-        binding?.rvMovies?.layoutManager = LinearLayoutManager(requireActivity())
-        binding?.rvMovies?.adapter = adapter
+        binding?.rvMoviesFavorite?.layoutManager = LinearLayoutManager(requireActivity())
+        binding?.rvMoviesFavorite?.adapter = adapter
         adapter.submitList(movieEntity)
 
         if (adapter.itemCount == 0) {
